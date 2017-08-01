@@ -1,0 +1,44 @@
+{
+  "name": "tson",
+  "version": "1.0.0",
+  "description": "GSON-like library for TypeScript",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha --compilers ts-node/register --require source-map-support/register --recursive src/test/*",
+    "coverage": "./node_modules/.bin/nyc --reporter=html npm test"
+  },
+  "keywords": [
+    "tson",
+    "gson",
+    "TypeScript",
+    "json",
+    "schema",
+    "serialization"
+  ],
+  "author": "Ezequiel Santamaría Navarro",
+  "license": "ISC",
+  "dependencies": {
+    "reflect-metadata": "^0.1.10"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.0.2",
+    "@types/mocha": "^2.2.41",
+    "chai": "^4.1.0",
+    "mocha": "^3.5.0",
+    "nyc": "^11.1.0",
+    "source-map-support": "^0.4.15",
+    "ts-node": "^3.3.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  }
+}
