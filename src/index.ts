@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { expect } from "chai";
 
-class IncompatibleSchemaError extends Error {
+export class IncompatibleSchemaError extends Error {
 
 }
 
