@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --compilers ts-node/register --require source-map-support/register --recursive src/test/*",
-    "coverage": "./node_modules/.bin/nyc --reporter=html npm test"
+    "coverage": "./node_modules/.bin/nyc --reporter=html npm test",
+    "codecov.io": "./node_modules/.bin/nyc --reporter=json npm test && codecov -f coverage/*.json -t 4137bca2-aab6-45c9-b783-b28195a91aad"
   },
   "keywords": [
     "tson",

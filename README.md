@@ -1,3 +1,5 @@
+![Code coverage](https://img.shields.io/codecov/c/github/lilezek/tson/master.svg)
+
 # TSon
 
 This is an aproach to get GSON (Google JSON seralization/deserialization) functionality into TypeScript.
