@@ -1,6 +1,6 @@
-import * as TSON from "../index";
 import { expect } from "chai";
 import "mocha";
+import * as TSON from "../index";
 
 @TSON.TSonSerializable
 @TSON.TSonArguments("a", "z")
@@ -27,7 +27,7 @@ class Cclass3 {
 
 @TSON.TSonSerializable
 class Cclass4 {
-  // Wrong order: arguments must be alphabetically sorted. 
+  // Wrong order: arguments must be alphabetically sorted.
   constructor(public z: number, public a: number) {
 
   }
@@ -43,7 +43,7 @@ describe("Basic tests", () => {
 
   it("Wrong structure throws exception", () => {
     expect(TSON.fromJson.bind(null, Cclass, {})).to.throw(TSON.IncompatibleSchemaError);
-  })
+  });
 
 });
 
@@ -51,18 +51,18 @@ describe("No TsonArguments used", () => {
   it("Corret sorting of arguments using fromJson", () => {
     const a = Math.random();
     const z = Math.random();
-    const class3 = TSON.fromJson(Cclass3, {a, z}); 
-    expect(class3.a).to.be.eq(a);    
-    expect(class3.z).to.be.eq(z);    
+    const class3 = TSON.fromJson(Cclass3, {a, z});
+    expect(class3.a).to.be.eq(a);
+    expect(class3.z).to.be.eq(z);
   });
 
   it("toJson gets every ownProperty", () => {
-    const a = ""+Math.random();
+    const a = "" + Math.random();
     const z = Math.random();
-    const class3 = new Cclass2(a,z);
+    const class3 = new Cclass2(a, z);
     const serialized = TSON.toJson(class3);
     expect(serialized.a).to.be.eq(a);
     expect(serialized.z).to.be.eq(z);
     expect(Object.keys(serialized).length).to.be.eq(2);
   });
-}) 
+});
