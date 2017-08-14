@@ -4,9 +4,10 @@
 import { ETypes, IBody, IClassType, IInterfaceType, IPrimitiveType, IUnionType } from "awesome-metadata";
 import { expect } from "chai";
 import "reflect-metadata";
-import { IncompatibleSchemaError } from "./decorator";
 
-export { IncompatibleSchemaError };
+export class IncompatibleSchemaError extends Error {
+
+}
 
 function resolveSingleType(type: IClassType | IUnionType | IPrimitiveType | IInterfaceType,
                            json: any,

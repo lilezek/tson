@@ -1,6 +1,6 @@
 // tslint:disable
 import "reflect-metadata";
-import {IncompatibleSchemaError} from "./decorator";
+import {IncompatibleSchemaError} from "./index";
 import {Cclass2, Cclass, Cclass3, Cclass4, Union1Class, Union2Class, UnionClass} from "./test/basic";
 Reflect.defineMetadata("atm:body", {}, IncompatibleSchemaError);
 Reflect.defineMetadata("atm:body", {a: {type: {kind:0,primitive: "string"}, visibility: 1, optional: false},z: {type: {kind:0,primitive: "number"}, visibility: 1, optional: false},}, Cclass2);
