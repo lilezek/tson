@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "GSON-like library for TypeScript",
   "main": "lib/index.js",
+  "module": "lib/index",
+  "typings": "lib/index",
   "scripts": {
     "test": "mocha --compilers ts-node/register --require source-map-support/register --recursive src/test/*",
     "coverage": "./node_modules/.bin/nyc --reporter=html npm test",

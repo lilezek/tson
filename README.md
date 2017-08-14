@@ -4,67 +4,43 @@
 
 This is an aproach to get GSON (Google JSON seralization/deserialization) functionality into TypeScript.
 
+This version uses [awesome-metadata](https://github.com/lilezek/awesome-metadata) to emit additional metadata for all classes.
+If you don't want to use `awesome-metadata`, you can check the branch [awesome-metadata](https://github.com/lilezek/awesome-metadata#decorators) to use decorators instead. 
+
 ## Limitations
 
-### Mandatory decorators
+### This library does not (yet) work with interfaces
 
-TypeScript language limitations makes this library impossible to achieve the exactly functionality of GSON out-of-the-box, 
-so by now we have to use some decorators in order to make this library work. 
-
-Right now in TypeScript, it is not possible to do reflection in classes without decorate them. The compiler must use
-`emitDecoratorMetadata` to get some information.
-
-### Complex types and optional types are not supported
-
-The emited metadata of TypeScript compiler converts this:
-
-```typescript
-constructor(public a: string|number)
-```
-
-into this:
-
-```typescript
-[Object]
-```
-
-And this:
-
-```typescript
-// Either mandatory:
-constructor(public a: string)
-// or optional
-constructor(public a?: string)
-```
-
-into this:
-
-```typescript
-[String]
-```
+Awesome metadata does not yet emit information for interfaces, so there is no serialization/deserialization for classes which uses interfaces.
 
 ## Example of use
 
-```typescript
+First, you have to emit metadata of classes using `atm` in your TypeScript project folder command:
+
+```sh
+node_modules/.bin/atm > metadata.ts
+```
+
+And then you have to import metadata anywhere in you code:
+
+```ts
+import "./metadata"
+```
+
+After doing this, you can use anywhere the library:
+
+```ts
 import * as TSON from "tson";
 
-// Decorate to mark this class as serializable by TSON.
-@TSON.TSonSerializable
-// Decorate to mark the names of the arguments 
-@TSON.TSonArguments("a", "z")
-class Cclass2 {
-  constructor(public a: string, private z: number) {
-    // Construct things
-  }
-}
+const el = new AnyClass(...);
 
-// Decorate to mark this class as serializable by TSON.
-@TSON.TSonSerializable
-// Decorate to mark the names of the arguments 
-@TSON.TSonArguments("x", "y")
-class Cclass {
-  constructor(public x: string, private y: Cclass2) {
-    // Construct things
-  }
-}
+// Serialize
+const ser = TSON.toJson(el);
+
+// Deserialize
+const el2 = TSON.fromJson(AnyClass, ser);
 ```
+
+## Bad deserialization
+
+If you try to deserialize a class with a wrong JSON object, it will throw an `IncompatibleSchemaError`.
