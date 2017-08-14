@@ -1,6 +1,6 @@
 {
   "name": "tson",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "GSON-like library for TypeScript",
   "main": "lib/index.js",
   "module": "lib/index",
