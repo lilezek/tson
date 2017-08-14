@@ -1,3 +1,18 @@
 {
-    "extends": "tslint:recommended"
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {
+        "object-literal-sort-keys": [
+            false
+        ],
+        "forin": false,
+        "max-classes-per-file": [
+            false
+        ],
+        "ban-types": false
+    },
+    "rulesDirectory": []
 }

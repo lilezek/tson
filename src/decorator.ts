@@ -1,22 +1,28 @@
-import "reflect-metadata";
+/**
+ * TSON for using with typescript decorators
+ */
 import { expect } from "chai";
+import "reflect-metadata";
 
+/**
+ * Error representing incompatible schema with data.
+ */
 export class IncompatibleSchemaError extends Error {
 
 }
 
 const basicMappings = {
-  "string": String,
-  "number": Number,
-  "boolean": Boolean,
-  "null": null,
-  "undefined": undefined,
-  "symbol": Symbol,
-  "object": Object,
-  "function": Function,
+  string: String,
+  number: Number,
+  boolean: Boolean,
+  null: null,
+  undefined,
+  symbol: Symbol,
+  object: Object,
+  function: Function,
 };
 
-export function fromJson<T>(theClass: { new(...args: any[]): T }, json: any) {
+export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }, json: any) {
   const jsonCopy = Object.assign({}, json);
   let keys = Reflect.getMetadata("TSonArguments", theClass) as (string[] | undefined);
   if (!keys) {
@@ -29,10 +35,11 @@ export function fromJson<T>(theClass: { new(...args: any[]): T }, json: any) {
     if (objectType === "object" && Reflect.getMetadata("isTsonSerializable", constructorType)) {
       jsonCopy[keys[i]] = fromJson(constructorType, jsonCopy[keys[i]]);
     } else if (basicMappings[objectType] !== constructorType) {
-      throw new IncompatibleSchemaError("Incompatible type " + keys[i] + " should be an " + constructorType)
+      throw new IncompatibleSchemaError("Incompatible type " + keys[i] + " should be an " + constructorType);
     }
   }
-  return new (Function.prototype.bind.apply(theClass, [null].concat(keys.map(k => jsonCopy[k])))) as T;
+  // tslint:disable-next-line:new-parens
+  return new (Function.prototype.bind.apply(theClass, [null].concat(keys.map((k) => jsonCopy[k])))) as T;
 }
 
 export function toJson(c: { constructor: Function }) {
@@ -67,5 +74,5 @@ export function TSonSerializable(c: any) {
 export function TSonArguments(...args: string[]) {
   return (c: any) => {
     Reflect.defineMetadata("TSonArguments", args, c);
-  }
+  };
 }
