@@ -30,7 +30,7 @@ import "./metadata"
 After doing this, you can use anywhere the library:
 
 ```ts
-import * as TSON from "tson";
+import * as TSON from "typescript-son";
 
 const el = new AnyClass(...);
 

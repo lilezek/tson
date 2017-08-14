@@ -1,5 +1,5 @@
 {
-  "name": "tson",
+  "name": "typescript-son",
   "version": "0.0.1",
   "description": "GSON-like library for TypeScript",
   "main": "lib/index.js",
@@ -11,7 +11,7 @@
     "codecov.io": "./node_modules/.bin/nyc --reporter=json npm test && codecov -f coverage/*.json -t 4137bca2-aab6-45c9-b783-b28195a91aad"
   },
   "keywords": [
-    "tson",
+    "typescript-son",
     "gson",
     "TypeScript",
     "json",
