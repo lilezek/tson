@@ -5,7 +5,7 @@
 This is an aproach to get GSON (Google JSON seralization/deserialization) functionality into TypeScript.
 
 This version uses [awesome-metadata](https://github.com/lilezek/awesome-metadata) to emit additional metadata for all classes.
-If you don't want to use `awesome-metadata`, you can check the branch [awesome-metadata](https://github.com/lilezek/awesome-metadata#decorators) to use decorators instead. 
+If you don't want to use `awesome-metadata`, you can check the branch [decorator](https://github.com/lilezek/tson/tree/decorator) to use decorators instead. 
 
 ## Limitations
 
