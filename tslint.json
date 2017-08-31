@@ -12,7 +12,10 @@
         "max-classes-per-file": [
             false
         ],
-        "ban-types": false
+        "ban-types": false,
+        "max-line-length": [
+            140
+        ]
     },
     "rulesDirectory": []
 }

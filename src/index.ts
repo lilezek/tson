@@ -5,6 +5,28 @@ import { ETypes, IBody, IClassType, IInterfaceType, IPrimitiveType, IUnionType }
 import { expect } from "chai";
 import "reflect-metadata";
 
+// tslint:disable-next-line:no-namespace
+declare global {
+  export namespace Reflect {
+    export function getMetadata<T = any>(key: "tson:post", target: { new(...args: any[]): T }): Array<(target: T) => ValidationError | undefined> | undefined;
+  }
+}
+
+export class ValidationError extends Error {
+  public key: string;
+  private pMessage: string;
+
+  public set message(v: string) {
+    this.pMessage = v;
+  }
+
+  public get message() {
+    return this.pMessage + ", of " + this.key + " field.";
+  }
+}
+
+export type ValidatorFunction<V> = (val: V) => ValidationError | undefined;
+
 export class IncompatibleSchemaError extends Error {
 
 }
@@ -60,6 +82,17 @@ export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }
       parsedKeys++;
     }
   }
+
+  // Apply post validations:
+  const postValidations = Reflect.getMetadata<T>("tson:post", theClass);
+
+  if (postValidations) {
+    const err = postValidations.reduce((error, validator) => error || validator(result), undefined);
+    if (err) {
+      throw err;
+    }
+  }
+
   if (parsedKeys < originalAmountKeys) {
     throw new IncompatibleSchemaError("Object contains unexpected fields");
   }
