@@ -21,7 +21,7 @@
   "author": "Ezequiel Santamaría Navarro",
   "license": "ISC",
   "dependencies": {
-    "awesome-metadata": "0.0.1",
+    "awesome-metadata": "0.0.2",
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {
