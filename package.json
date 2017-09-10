@@ -1,11 +1,12 @@
 {
   "name": "typescript-son",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "GSON-like library for TypeScript",
   "main": "lib/index.js",
   "module": "lib/index",
   "typings": "lib/index",
   "scripts": {
+    "metadata": "atm > src/metadata.ts",
     "test": "mocha --compilers ts-node/register --require source-map-support/register --recursive src/test/*",
     "coverage": "./node_modules/.bin/nyc --reporter=html npm test",
     "codecov.io": "./node_modules/.bin/nyc --reporter=json npm test && codecov -f coverage/*.json -t 4137bca2-aab6-45c9-b783-b28195a91aad"
@@ -21,7 +22,7 @@
   "author": "Ezequiel Santamaría Navarro",
   "license": "ISC",
   "dependencies": {
-    "awesome-metadata": "0.0.2",
+    "awesome-metadata": "0.0.3",
     "reflect-metadata": "^0.1.10"
   },
   "devDependencies": {

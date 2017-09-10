@@ -30,4 +30,8 @@ export declare class Union2Class {
 export declare class UnionClass {
     union: Union1Class | Union2Class;
 }
+export declare class DateClass {
+    x: Date;
+    constructor(x: Date);
+}
 import "../metadata";

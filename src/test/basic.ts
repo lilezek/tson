@@ -41,6 +41,12 @@ export class UnionClass {
   public union: Union1Class | Union2Class;
 }
 
+export class DateClass {
+  constructor(public x: Date) {
+
+  }
+}
+
 import "../metadata";
 
 describe("ATM tests", () => {
@@ -78,5 +84,15 @@ describe("ATM tests", () => {
     expect(c1.union).to.be.instanceof(Union1Class);
     expect(c2.union).to.be.instanceof(Union2Class);
     expect(TSON.fromJson.bind(null, UnionClass, {union: uerr})).to.throw();
+  });
+
+  it("Serializing dates", () => {
+    const date = new Date();
+    const c1 = new DateClass(date);
+
+    const u1 = TSON.toJson(c1);
+    const c2 = TSON.fromJson(DateClass, u1);
+
+    expect(c2.x.getTime()).to.be.equal(c1.x.getTime());
   });
 });

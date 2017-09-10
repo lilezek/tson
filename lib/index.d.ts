@@ -17,7 +17,10 @@ export declare class IncompatibleSchemaError extends Error {
 export declare function fromJson<T>(theClass: {
     prototype: any;
     new (...args: any[]): T;
-}, json: any): T;
+}, json: any): any;
 export declare function toJson(c: {
+    constructor: Function;
+}): any;
+export declare function hardcodedToJson(c: {
     constructor: Function;
 }): any;

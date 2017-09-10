@@ -74,6 +74,9 @@ export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }
   const originalAmountKeys = Object.keys(json).length;
   let parsedKeys = 0;
   const body = Reflect.getMetadata("atm:body", theClass) as IBody;
+  if (!body) {
+    return hardcodedFromJson(theClass, json) as T;
+  }
   for (const k in body) {
     const el = body[k];
     if (!el.optional || k in json) {
@@ -99,6 +102,25 @@ export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }
   return result as T;
 }
 
+function hardcodedFromJson(theClass: any, json: any) {
+  if (theClass === Date) {
+    if (typeof json !== "string") {
+      throw new IncompatibleSchemaError("Expected string representing a Date but " + typeof json + " found.");
+    }
+    const date = new Date(json);
+    // TODO: Is this a correct way to determine if the date is correct or not?
+    if (Number.isNaN(date.getDay())) {
+      throw new IncompatibleSchemaError("Expected string represeting a Date but '" + json + "' does not represent a valid date.");
+    }
+    return date;
+  } else if (theClass === Object) {
+    if (typeof json !== "object") {
+      throw new IncompatibleSchemaError("Expected any object but " + typeof json + " found.");
+    }
+    return json;
+  }
+}
+
 function extractSingleType(type: IClassType | IUnionType | IPrimitiveType | IInterfaceType,
                            json: any): any {
   if (type.kind === ETypes.CLASS) {
@@ -122,6 +144,9 @@ export function toJson(c: { constructor: Function }) {
 
   // Traverse body:
   const body = Reflect.getMetadata("atm:body", c.constructor) as IBody;
+  if (!body) {
+    return hardcodedToJson(c);
+  }
   for (const k in body) {
     const el = body[k];
     if (!el.optional || k in c) {
@@ -130,4 +155,19 @@ export function toJson(c: { constructor: Function }) {
     }
   }
   return result;
+}
+
+export function hardcodedToJson(c: { constructor: Function }) {
+  if (c instanceof Date) {
+    return c.toISOString();
+  } else if (c.constructor === Object) {
+    const result = {} as any;
+    for (const k in c) {
+      if (c.hasOwnProperty(k)) {
+        const el = (c as any)[k];
+        result[k] = hardcodedToJson(el);
+      }
+    }
+    return result;
+  }
 }
