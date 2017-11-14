@@ -7,17 +7,19 @@ declare global  {
     }
 }
 export declare class ValidationError extends Error {
+    __metadataDummyMethod(): void;
     key: string;
     private pMessage;
     message: string;
 }
 export declare type ValidatorFunction<V> = (val: V) => ValidationError | undefined;
 export declare class IncompatibleSchemaError extends Error {
+    __metadataDummyMethod(): void;
 }
 export declare function fromJson<T>(theClass: {
     prototype: any;
     new (...args: any[]): T;
-}, json: any): any;
+}, json: any): T;
 export declare function toJson(c: {
     constructor: Function;
 }): any;

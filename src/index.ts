@@ -1,7 +1,7 @@
 /**
  * TSON for using with Awesome Typescript Metadata Emitter: https://github.com/lilezek/awesome-metadata
  */
-import { ETypes, IBody, IClassType, IInterfaceType, IPrimitiveType, IUnionType } from "awesome-metadata";
+import { BodyMember, ETypes, IClassType, ILiteralType, IOptionality, IPrimitiveType, IUnionType, IVisibility } from "awesome-metadata";
 import { expect } from "chai";
 import "reflect-metadata";
 
@@ -25,13 +25,17 @@ export class ValidationError extends Error {
   }
 }
 
+interface IBody {
+  [key: string]: BodyMember & IVisibility & IOptionality;
+}
+
 export type ValidatorFunction<V> = (val: V) => ValidationError | undefined;
 
 export class IncompatibleSchemaError extends Error {
 
 }
 
-function resolveSingleType(type: IClassType | IUnionType | IPrimitiveType | IInterfaceType,
+function resolveSingleType(type: IClassType | IUnionType | IPrimitiveType | ILiteralType,
                            json: any,
                            keyName: string): any {
   if (type.kind === ETypes.CLASS) {
@@ -80,7 +84,7 @@ export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }
   for (const k in body) {
     const el = body[k];
     if (!el.optional || k in json) {
-      const type = el.type;
+      const type = el;
       result[k] = resolveSingleType(type, json[k], k);
       parsedKeys++;
     }
@@ -90,9 +94,12 @@ export function fromJson<T>(theClass: { prototype: any, new(...args: any[]): T }
   const postValidations = Reflect.getMetadata<T>("tson:post", theClass);
 
   if (postValidations) {
-    const err = postValidations.reduce((error, validator) => error || validator(result), undefined);
-    if (err) {
-      throw err;
+    let err = null;
+    for (const validator of postValidations) {
+      err = err || validator(result);
+      if (err) {
+        throw err;
+      }
     }
   }
 
@@ -121,7 +128,7 @@ function hardcodedFromJson(theClass: any, json: any) {
   }
 }
 
-function extractSingleType(type: IClassType | IUnionType | IPrimitiveType | IInterfaceType,
+function extractSingleType(type: IClassType | IUnionType | IPrimitiveType | ILiteralType,
                            json: any): any {
   if (type.kind === ETypes.CLASS) {
     return toJson(json);
@@ -150,7 +157,7 @@ export function toJson(c: { constructor: Function }) {
   for (const k in body) {
     const el = body[k];
     if (!el.optional || k in c) {
-      const type = el.type;
+      const type = el;
       result[k] = extractSingleType(type, (c as any)[k]);
     }
   }

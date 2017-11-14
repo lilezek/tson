@@ -47,8 +47,6 @@ export class DateClass {
   }
 }
 
-import "../metadata";
-
 describe("ATM tests", () => {
   it("Serialize/deserialize class gets equality", () => {
     const x = { x: "1", y: { a: "2", z: 14 } };
